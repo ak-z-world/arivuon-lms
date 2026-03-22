@@ -64,13 +64,14 @@ def get_user_by_uuid(db: Session, user_uuid: str):
 
 
 def get_student_profile(db: Session, user_uuid: str):
-
+    print("UUID RECEIVED:", user_uuid)
     user = repository.get_user_by_uuid(db, user_uuid)
-
+    print(f"user: {user}")
     if not user:
         return None
-
-    return repository.get_student_profile_by_user_id(db, user.id)
+    profile = repository.get_student_profile_by_user_id(db, user.id)
+    print(f"profile: {profile}")
+    return profile
 
 
 def get_trainer_profile(db: Session, user_uuid: str):
@@ -81,4 +82,42 @@ def get_trainer_profile(db: Session, user_uuid: str):
         return None
 
     return repository.get_trainer_profile_by_user_id(db, user.id)
+
+def update_user_service(db, user_uuid: str, data):
+    from . import repository
+    user = repository.get_user_by_uuid(db, user_uuid)
+    if not user:
+        from fastapi import HTTPException
+        raise HTTPException(status_code=404, detail="User not found")
+    update_dict = {k: v for k, v in data.model_dump().items() if v is not None}
+    return repository.update_user(db, user, update_dict)
+ 
+ 
+def update_student_profile_service(db, user_uuid: str, profile_data):
+    from . import repository
+    user    = repository.get_user_by_uuid(db, user_uuid)
+    if not user:
+        from fastapi import HTTPException
+        raise HTTPException(status_code=404, detail="User not found")
+    profile = repository.get_student_profile_by_user_id(db, user.id)
+    if not profile:
+        from fastapi import HTTPException
+        raise HTTPException(status_code=404, detail="Student profile not found")
+    update_dict = {k: v for k, v in profile_data.model_dump().items() if v is not None}
+    return repository.update_student_profile(db, profile, update_dict)
+ 
+ 
+def update_trainer_profile_service(db, user_uuid: str, profile_data):
+    from . import repository
+    user    = repository.get_user_by_uuid(db, user_uuid)
+    if not user:
+        from fastapi import HTTPException
+        raise HTTPException(status_code=404, detail="User not found")
+    profile = repository.get_trainer_profile_by_user_id(db, user.id)
+    if not profile:
+        from fastapi import HTTPException
+        raise HTTPException(status_code=404, detail="Trainer profile not found")
+    update_dict = {k: v for k, v in profile_data.model_dump().items() if v is not None}
+    return repository.update_trainer_profile(db, profile, update_dict)
+
 

@@ -5,6 +5,20 @@ from sqlalchemy.orm import relationship
 from app.database.base import Base
 
 
+class Category(Base):
+
+    __tablename__ = "course_categories"
+
+    id = Column(Integer, primary_key=True)
+
+    uuid = Column(String(36), unique=True, default=lambda: str(uuid.uuid4()))
+
+    name = Column(String(150), unique=True, nullable=False)
+
+    description = Column(String(500))
+
+    courses = relationship("Course", back_populates="category")
+
 class Course(Base):
 
     __tablename__ = "courses"
@@ -25,9 +39,11 @@ class Course(Base):
 
     thumbnail = Column(String(300))  # course image URL
 
-    category = Column(String(100))
+    category_id = Column(Integer, ForeignKey("course_categories.id"))
 
     is_active = Column(String(10), default="true")
+
+    category = relationship("Category", back_populates="courses")
 
     prices = relationship("CoursePrice", back_populates="course")
 

@@ -1,6 +1,22 @@
+# D:\arivuon-lms\app\modules\courses\repository.py
 from sqlalchemy.orm import Session
 from . import models
 
+
+def create_category(db: Session, category_data):
+
+    category = models.Category(**category_data)
+
+    db.add(category)
+    db.commit()
+    db.refresh(category)
+
+    return category
+
+
+def get_categories(db: Session):
+
+    return db.query(models.Category).all()
 
 def create_course(db: Session, course_data, prices):
 

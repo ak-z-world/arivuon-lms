@@ -123,3 +123,13 @@ class TrainerProfileResponse(TrainerProfileBase):
     class Config:
 
         from_attributes = True
+
+class UserUpdate(BaseModel):
+    name:  Optional[str]
+    phone: Optional[str]
+ 
+class StudentProfileUpdate(StudentProfileBase):
+    pass
+ 
+class TrainerProfileUpdate(TrainerProfileBase):
+    pass

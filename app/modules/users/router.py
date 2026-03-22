@@ -98,3 +98,30 @@ def get_trainer_profile(user_uuid: str, db: Session = Depends(get_db)):
         "data": profile
     }
 
+@router.put("/{user_uuid}",
+            response_model=schemas.APIResponse[schemas.UserResponse])
+def update_user(user_uuid: str, data: schemas.UserUpdate, db: Session = Depends(get_db)):
+    updated = service.update_user_service(db, user_uuid, data)
+    return {"success": True, "message": "User updated", "data": updated}
+
+
+@router.put("/{user_uuid}/student-profile",
+            response_model=schemas.APIResponse[schemas.StudentProfileResponse])
+def update_student_profile(
+    user_uuid: str,
+    profile: schemas.StudentProfileUpdate,
+    db: Session = Depends(get_db),
+):
+    updated = service.update_student_profile_service(db, user_uuid, profile)
+    return {"success": True, "message": "Student profile updated", "data": updated}
+
+
+@router.put("/{user_uuid}/trainer-profile",
+            response_model=schemas.APIResponse[schemas.TrainerProfileResponse])
+def update_trainer_profile(
+    user_uuid: str,
+    profile: schemas.TrainerProfileUpdate,
+    db: Session = Depends(get_db),
+):
+    updated = service.update_trainer_profile_service(db, user_uuid, profile)
+    return {"success": True, "message": "Trainer profile updated", "data": updated}

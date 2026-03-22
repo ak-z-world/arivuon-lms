@@ -1,6 +1,24 @@
+# D:\arivuon-lms\app\modules\courses\schemas.py
 from pydantic import BaseModel
 from typing import Optional, List
 
+
+class CategoryBase(BaseModel):
+
+    name: str
+    description: Optional[str] = None
+
+
+class CategoryCreate(CategoryBase):
+    pass
+
+
+class CategoryResponse(CategoryBase):
+
+    uuid: str
+
+    class Config:
+        from_attributes = True
 
 class CoursePriceBase(BaseModel):
 
@@ -24,10 +42,13 @@ class CoursePriceResponse(CoursePriceBase):
 class CourseBase(BaseModel):
 
     title: str
+    slug: str
     description: Optional[str]
     level: Optional[str]
     duration: Optional[str]
-    category: Optional[str]
+    thumbnail: Optional[str] = None
+    category_id: int
+    is_active: Optional[str] = "true"
 
 
 class CourseCreate(CourseBase):

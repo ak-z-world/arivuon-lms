@@ -1,6 +1,18 @@
+# D:\arivuon-lms\app\modules\courses\service.py
 from sqlalchemy.orm import Session
 from . import repository
 
+
+def create_category(db: Session, category):
+
+    category_data = category.model_dump()
+
+    return repository.create_category(db, category_data)
+
+
+def get_categories(db: Session):
+
+    return repository.get_categories(db)
 
 def create_course(db: Session, course):
 

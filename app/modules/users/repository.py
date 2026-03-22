@@ -64,3 +64,27 @@ def create_trainer_profile(db: Session, profile_data):
     db.refresh(profile)
 
     return profile
+
+def update_user(db, user, update_data: dict):
+    for k, v in update_data.items():
+        setattr(user, k, v)
+    db.commit()
+    db.refresh(user)
+    return user
+ 
+ 
+def update_student_profile(db, profile, update_data: dict):
+    for k, v in update_data.items():
+        setattr(profile, k, v)
+    db.commit()
+    db.refresh(profile)
+    return profile
+ 
+ 
+def update_trainer_profile(db, profile, update_data: dict):
+    for k, v in update_data.items():
+        setattr(profile, k, v)
+    db.commit()
+    db.refresh(profile)
+    return profile
+
